@@ -2,14 +2,17 @@ package pieces;
 
 public class Pawn extends Pieces{
 
-	public Pawn(int team, String position, String name) {
-		super(team, position, name);
+	public Pawn(int team, int row,int column, String name) {
+		super(team, row,column, name);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void move(Pieces[][] board, String pos) {
-		// TODO Auto-generated method stub
+	public Pieces[][] move(Pieces[][] board, int r,int c) {
+		
+		
+		
+		return new Pieces[2][2];
 		
 	}
 

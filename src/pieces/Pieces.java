@@ -4,15 +4,16 @@ public abstract class Pieces {
 	
 	
 	int team;
-	String position;
+	int row,column;
 	String name;
-	public Pieces(int team,String position,String name){
+	public Pieces(int team,int row,int column,String name){
 		 this.team= team;
-		 this.position=position;
+		 this.row=row;
+		 this.column=column;
 		 this.name=name;
 		 }
 
-	public abstract void move(Pieces[][]board,String pos);
+	public abstract Pieces[][] move(Pieces[][]board,int r,int c);
 	public abstract String getPosition();
 	public abstract String getName();
 	
