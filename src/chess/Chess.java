@@ -27,7 +27,7 @@ public class Chess {
 			System.out.println(" "+(8-x));
 			color+=1;
 		}
-		System.out.println("a  b c  d  e f   g  h");
+		System.out.println("a  b c  d  fadssde f   g  h");
 		
 	}
 
