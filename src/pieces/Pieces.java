@@ -3,9 +3,9 @@ package pieces;
 public abstract class Pieces {
 	
 	
-	int team;
-	int row,column;
-	String name;
+	protected int team;
+	protected int row,column;
+	protected String name;
 	public Pieces(int team,int row,int column,String name){
 		 this.team= team;
 		 this.row=row;
@@ -13,9 +13,10 @@ public abstract class Pieces {
 		 this.name=name;
 		 }
 
-	public abstract Pieces[][] move(Pieces[][]board,int r,int c);
+	public abstract boolean canMove(Pieces[][]board,int r,int c);
 	public abstract String getPosition();
 	public abstract String getName();
+	public abstract int getTeam();
 	
 	
 }

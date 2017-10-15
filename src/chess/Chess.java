@@ -1,6 +1,7 @@
 package chess;
 import pieces.Pawn;
 import pieces.Pieces;
+import static utilities.convertCoordinates.convertPosition;
 
 public class Chess {
 	private static Pieces board[][]=new Pieces[8][8];
@@ -8,38 +9,34 @@ public class Chess {
 	public static void main(String[] args) {
 		
 		for (int x=0;x<board[5].length;x++) {
-			board[6][x]=new Pawn(1,6,x,"p"+(x+1));
+			board[6][x]=new Pawn(0,6,x,"p"+(x+1));
 		}
+		
+		board[5][1]=new Pawn(1,6,1,"t"+(1+1));
+		board[5][2]=new Pawn(1,6,1,"t"+(1+1));
 		renderBoard(board);
 		System.out.println();
-		move("b2","b3");
+		int currentCoord[]=convertPosition("b2");
+		int newCoord[]=convertPosition("c3");
+		Pieces p = board[currentCoord[0]][currentCoord[1]];
+		System.out.println(currentCoord[0]+" "+currentCoord[1]);
+		if (p.canMove(board, newCoord[0], newCoord[1]))
+		   move(currentCoord,newCoord);
+		else System.out.println("invalid ");
 		renderBoard(board);
 		
 		
 	}
 	
 	
-	private static void move(String currentPos,String newPos){
-		int currentCoord[]=convertPosition(currentPos);
-		int newCoord[]=convertPosition(newPos);
+	private static void move(int currentCoord[],int newCoord[]){
 		Pieces temp = board[currentCoord[0]][currentCoord[1]];
 		board[currentCoord[0]][currentCoord[1]]=null;
 		board[newCoord[0]][newCoord[1]]=temp;
 		
 		
 	}
-	private static int[] convertPosition(String pos){
-		pos = pos.toLowerCase();
-		char coordinate1=pos.charAt(0);
-		char coordinate2=pos.charAt(1);
-		int result[]=new int[2];
-		result[0]=8-(Character.getNumericValue(coordinate2));
-		result[1]=coordinate1-97;
-		
-		return result;
-		
-	}
-	
+
 	
 	private static void renderBoard(Pieces [][] b){
 		int color=2;
@@ -60,7 +57,6 @@ public class Chess {
 			System.out.println("   "+(8-x)+"");
 			color+=1;
 		}
-		//System.out.println("a  b c  d  e f   g  h");
 		
 	}
 
