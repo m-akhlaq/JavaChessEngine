@@ -38,6 +38,11 @@ public class Pawn extends Pieces{
 			 validMoves.add(new Coordinates(row+1,column));			
 		 }
 		 if (row==1 && board[row+1][column]==null && board[row+2][column]==null){
+		}else{
+		  if (row<=6 && board[row+1][column]==null){
+			  validMoves.add(new Coordinates(row+1,column));			
+		   }
+		  if (row==1 && board[row+1][column]==null && board[row+2][column]==null){
 			  validMoves.add(new Coordinates(row+2,column));	
 		 }
 		 if (row<=6 && column>=1 && board[row+1][column-1]!=null && board[row+1][column-1].getTeam()!=team){
