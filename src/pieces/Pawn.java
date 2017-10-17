@@ -64,9 +64,9 @@ public class Pawn extends Pieces{
 			
 		
 		
-		
+		 }
 		return false;
-		
+		 
 	}
 
 	@Override

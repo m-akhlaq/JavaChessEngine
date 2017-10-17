@@ -1,4 +1,5 @@
 package chess;
+import pieces.King;
 import pieces.Pawn;
 import pieces.Pieces;
 import static utilities.convertCoordinates.convertPosition;
@@ -9,16 +10,16 @@ public class Chess {
 	public static void main(String[] args) {
 		
 		for (int x=0;x<board[5].length;x++) {
-			board[6][x]=new Pawn(0,6,x,"wP");
+			board[6][x]=new King(0,6,x,"wK");
 		}
 		for (int x=0;x<board[1].length;x++) {
-			board[1][x]=new Pawn(1,1,x,"bP");
+			board[1][x]=new King(1,1,x,"bK");
 		}
-		
+		board[3][3]=new King(0,3,3,"TK");
 		renderBoard(board);
 		System.out.println();
-		int currentCoord[]=convertPosition("h7");
-		int newCoord[]=convertPosition("b7");
+		int currentCoord[]=convertPosition("a7");
+		int newCoord[]=convertPosition("a7");
 		Pieces p = board[currentCoord[0]][currentCoord[1]];
 		System.out.println(currentCoord[0]+" "+currentCoord[1]);
 		if (p.canMove(board, newCoord[0], newCoord[1]))
