@@ -33,7 +33,7 @@ public class Pawn extends Pieces{
 		 if (row>=1 && column<=6 && board[row-1][column+1]!=null && board[row-1][column+1].getTeam()!=team){
 			 validMoves.add(new Coordinates(row-1,column+1));
 		 }
-		}else{
+		}else{//defining valid moves for black pawns
 		  if (row<=6 && board[row+1][column]==null){
 			  validMoves.add(new Coordinates(row+1,column));			
 		   }
