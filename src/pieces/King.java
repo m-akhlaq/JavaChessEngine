@@ -60,23 +60,15 @@ public class King extends Pieces{
 		
 		
 		System.out.println(validMoves);
-				
+		for(Coordinates co:validMoves){
+			if (co.equals(proposedMove)){
+				return true;
+			}
+		}
 		return false;
 		
 	}
 	
-	//method to check which moves are valid
-	public List<Coordinates> checkMoves(Coordinates[] moves, Pieces[][] board){
-		List<Coordinates> validMoves = new ArrayList<Coordinates>();
-		for(int i=0; i<moves.length;i++){
-			int rowTemp=moves[i].getRow();
-			int columnTemp = moves[i].getColumn();
-			if(board[rowTemp][columnTemp]==null){
-				validMoves.add(moves[i]);
-			}
-		}
-		return validMoves;
-		}
 
 	@Override
 	public String getPosition() {
@@ -92,5 +84,12 @@ public class King extends Pieces{
 		// TODO Auto-generated method stub
 		return name;
 	}
-
+	@Override
+	public void setRow(int r){
+		row=r;
+	}
+	@Override
+	public void setColumn(int c){
+		column=c;
+	}
 }

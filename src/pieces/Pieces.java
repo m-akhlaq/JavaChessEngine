@@ -17,6 +17,7 @@ public abstract class Pieces {
 	public abstract String getPosition();
 	public abstract String getName();
 	public abstract int getTeam();
-	
+	public abstract void setRow(int r);
+	public abstract void  setColumn(int c);
 	
 }
