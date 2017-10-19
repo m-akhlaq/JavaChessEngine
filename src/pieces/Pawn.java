@@ -38,7 +38,8 @@ public class Pawn extends Pieces{
 			 validMoves.add(new Coordinates(row+1,column));			
 		 }
 		 if (row==1 && board[row+1][column]==null && board[row+2][column]==null){
-		}else{
+			 validMoves.add(new Coordinates(row+2,column));	
+		 }
 		  if (row<=6 && board[row+1][column]==null){
 			  validMoves.add(new Coordinates(row+1,column));			
 		   }
@@ -54,7 +55,7 @@ public class Pawn extends Pieces{
 			
 			
 		}
-		System.out.println(validMoves);
+		System.out.println("Valid Moves="+validMoves);
 		for(Coordinates co:validMoves){
 			if (co.equals(proposedMove)){
 				return true;
@@ -64,10 +65,10 @@ public class Pawn extends Pieces{
 			
 		
 		
-		 }
+		 
 		return false;
 		 
-	}
+}
 
 	@Override
 	public String getPosition() {
@@ -83,5 +84,15 @@ public class Pawn extends Pieces{
 		// TODO Auto-generated method stub
 		return name;
 	}
+	@Override
+	public void setRow(int r){
+		row=r;
+	}
+	@Override
+	public void setColumn(int c){
+		column=c;
+	}
+
+	
 
 }
