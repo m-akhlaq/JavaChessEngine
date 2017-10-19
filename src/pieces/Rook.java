@@ -100,30 +100,4 @@ public class Rook extends Pieces{
 		return false;
 		
 	}
-	
-	//method to check which moves are valid
-
-	@Override
-	public String getPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public int getTeam(){
-		return team;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-	@Override
-	public void setRow(int r){
-		row=r;
-	}
-	@Override
-	public void setColumn(int c){
-		column=c;
-	}
-
 }

@@ -14,10 +14,24 @@ public abstract class Pieces {
 		 }
 
 	public abstract boolean canMove(Pieces[][]board,int r,int c);
-	public abstract String getPosition();
-	public abstract String getName();
-	public abstract int getTeam();
-	public abstract void setRow(int r);
-	public abstract void  setColumn(int c);
+	
+	public String getPosition() {
+		return null;
+	}
+	public int getTeam(){
+		return team;
+	}
+	public String getName() {
+		return name;
+	}
+	
+	
+	public void setRow(int r) {
+		row =r;	
+	}
+	public void setColumn(int c) {
+		column=c;
+	}
+
 	
 }

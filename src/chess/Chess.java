@@ -1,4 +1,5 @@
 package chess;
+import pieces.Bishop;
 import pieces.King;
 import pieces.Pawn;
 import pieces.Pieces;
@@ -31,6 +32,11 @@ public class Chess {
 		//king
 		board[0][4] = new King(1,0,4,"bK");
 		board[7][4] = new King(0,7,4,"wK");
+		//bishop
+		board[7][2] = new Bishop(0,7,2,"wB");
+		board[7][5] = new Bishop(0,7,5,"wB");
+		board[0][2] = new Bishop(1,0,2,"bB");
+		board[0][5] = new Bishop(1,0,5,"bB");
 		
 		renderBoard(board);
 		System.out.println();

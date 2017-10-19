@@ -106,20 +106,4 @@ public class Bishop extends Pieces{
 	}
 	
 
-
-	@Override
-	public String getPosition() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public int getTeam(){
-		return team;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return name;
-	}
-
 }
