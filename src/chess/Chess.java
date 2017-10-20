@@ -1,6 +1,7 @@
 package chess;
 import pieces.Bishop;
 import pieces.King;
+import pieces.Knight;
 import pieces.Pawn;
 import pieces.Pieces;
 import pieces.Rook;
@@ -37,7 +38,11 @@ public class Chess {
 		board[7][5] = new Bishop(0,7,5,"wB");
 		board[0][2] = new Bishop(1,0,2,"bB");
 		board[0][5] = new Bishop(1,0,5,"bB");
-		
+		//knight
+		board[7][2] = new Knight(0,7,1,"wKn");
+		board[7][5] = new Knight(0,7,6,"wKn");
+		board[0][2] = new Knight(1,0,1,"bKn");
+		board[0][5] = new Knight(1,0,6,"bKn");
 		renderBoard(board);
 		System.out.println();
 		
@@ -71,7 +76,7 @@ public class Chess {
 		    scan = new Scanner(System.in);
 			s = scan.nextLine();
 			proposedMove = splitInput(s);
-			//new temperory arrays are defined as a workaround for having an array returned from method convertpostion
+			//new temperory arrays are defined as a workaround for having an array returned from method convert postion
 			int [] tempCurrentCoord=convertPosition(proposedMove[0]);
 			int [] tempNewCoord=convertPosition(proposedMove[1]);
 			p=board[tempCurrentCoord[0]][tempCurrentCoord[1]];
