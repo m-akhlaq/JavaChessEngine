@@ -6,9 +6,11 @@ import pieces.Pawn;
 import pieces.Pieces;
 import pieces.Queen;
 import pieces.Rook;
+import utilities.Coordinates;
 
 import static utilities.convertCoordinates.convertPosition;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Chess {
@@ -34,6 +36,7 @@ public class Chess {
 		if (team==0)
 			System.out.println("White's move:");
 		else System.out.println("Black's move: ");
+		
 		Scanner scan = new Scanner(System.in);
 			s = scan.nextLine();
 		//checks if the users asks for a draw
@@ -96,6 +99,7 @@ public class Chess {
 		board[newCoord[0]][newCoord[1]]=temp;
 		board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
 		board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+		checkForCheck();
 		
 		
 	}
@@ -121,6 +125,55 @@ public class Chess {
 			color+=1;
 		}
 		
+	}
+	
+	private static void checkForCheck(){
+		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
+		ArrayList<Coordinates> allBlackMoves = new ArrayList<Coordinates>();
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y]!=null && board[x][y].getTeam()==0){
+					allWhiteMoves.addAll(board[x][y].allValidMoves(board));
+				}
+			}
+		}
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y]!=null && board[x][y].getTeam()==1){
+					allBlackMoves.addAll(board[x][y].allValidMoves(board));
+				}
+			}
+		}
+		
+		Coordinates whiteKing = findKing(0);
+		Coordinates blackKing = findKing(1);
+		
+		for(Coordinates c:allBlackMoves){
+			if (c.equals(whiteKing)){
+				System.out.println("White King in Check");
+			}
+		}
+		for(Coordinates c:allWhiteMoves){
+			if (c.equals(blackKing)){
+				System.out.println("black King in Check");
+			}
+		}
+		
+	}
+	
+	private static Coordinates findKing(int team){
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y] instanceof King && board[x][y].getTeam()==team){
+					return new Coordinates(x,y);
+				}
+			}	
+		}
+		
+		return null; 
 	}
 	
 	private static void initBoard(){

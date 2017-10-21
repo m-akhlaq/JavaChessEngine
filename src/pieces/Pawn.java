@@ -18,9 +18,22 @@ public class Pawn extends Pieces{
 			return false;
 		
 		Coordinates proposedMove = new Coordinates(r,c);
-		List<Coordinates> validMoves = new ArrayList<Coordinates>();
+		ArrayList<Coordinates> validMoves = allValidMoves(board);
 		//defining valid moves for white pawns
-		if (team==0){
+		System.out.println("Valid Moves="+validMoves);
+		for(Coordinates co:validMoves){
+			if (co.equals(proposedMove)){
+				return true;
+			}
+		}
+		return false;
+		 
+}
+	
+	
+	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
+	ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
+	if (team==0){
 		 if (row>=1 && board[row-1][column]==null){
 			validMoves.add(new Coordinates(row-1,column));			
 		 }
@@ -55,19 +68,10 @@ public class Pawn extends Pieces{
 			
 			
 		}
-		System.out.println("Valid Moves="+validMoves);
-		for(Coordinates co:validMoves){
-			if (co.equals(proposedMove)){
-				return true;
-			}
-		}
-		
-			
-		
-		
-		 
-		return false;
-		 
-}
+	
+	return validMoves;
+	}
+	
+	
 
 }

@@ -17,8 +17,20 @@ public class King extends Pieces{
 		if (r>7 || c>7 || r<0 || c<0)
 			return false;
 		
-		Coordinates proposedMove = new Coordinates(r,c);
-		List<Coordinates> validMoves = new ArrayList<Coordinates>();
+		Coordinates proposedMove = new Coordinates(r,c);	
+		ArrayList<Coordinates> validMoves=allValidMoves(board);
+		System.out.println(validMoves);
+		for(Coordinates co:validMoves){
+			if (co.equals(proposedMove)){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
+		ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
 		//defining valid moves for both Kings
 			if (row>=1) {
 				if (board[row-1][column]==null || board[row-1][column].getTeam()!=team)
@@ -52,20 +64,7 @@ public class King extends Pieces{
 				if (board[row+1][column-1]==null || board[row+1][column-1].getTeam()!=team)
 					validMoves.add(new Coordinates(row+1,column-1));
 			}
-			
-			
-			
-			
-			
-		
-		
-		System.out.println(validMoves);
-		for(Coordinates co:validMoves){
-			if (co.equals(proposedMove)){
-				return true;
-			}
-		}
-		return false;
+			return validMoves;
 		
 	}
 	
