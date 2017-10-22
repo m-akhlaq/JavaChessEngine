@@ -18,47 +18,48 @@ public class Knight extends Pieces{
 			return false;
 		
 		Coordinates proposedMove = new Coordinates(r,c);
-		List<Coordinates> validMoves = new ArrayList<Coordinates>();
+		List<Coordinates> validMoves = new ArrayList<Coordinates>();//each valid move is either open space or opposing team
 	
 		//hardcoded if statements
 		
+		
 		//going 2 left and 1 down
-		if(column>1 && row<7&&board[row+1][column-2]==null){
+		if(column>1 && row<7&& (board[row+1][column-2]==null||board[row+1][column-2].getTeam()!=team)){
 			validMoves.add(new Coordinates(row+1,column-2));
 		}
 		
 		//2 left and 1 up
-		if(column>1 && row>0 &&board[row-1][column-2]==null){
+		if(column>1 && row>0 && (board[row-1][column-2]==null||board[row-1][column-2].getTeam()!=team)){
 			validMoves.add(new Coordinates(row-1,column-2));
 		}
 		
 		//2 up and 1 left
-		if(column>0 && row>1&&board[row-2][column-1]==null){
+		if(column>0 && row>1&& (board[row-2][column-1]==null||board[row-2][column-1].getTeam()!=team)){
 			validMoves.add(new Coordinates(row-2,column-1));
 		}
 		
 		//2 up and 1 right
-		if(column<7 && row>1 && board[row-2][column+1]==null){
+		if(column<7 && row>1 && (board[row-2][column+1]==null||board[row-2][column+1].getTeam()!=team)){
 			validMoves.add(new Coordinates(row-2,column+1));
 		}
 		
 		//2 right and 1 up
-		if(column<6 && row>0 && board[row-1][column+2]==null){
+		if(column<6 && row>0 && (board[row-1][column+2]==null||board[row-1][column+1].getTeam()!=team)){
 			validMoves.add(new Coordinates(row-1,column+2));
 		}
 		
 		//2 right and 1 down
-		if(column<6 && row<7 && board[row+1][column+2]==null){
+		if(column<6 && row<7 && (board[row+1][column+2]==null||board[row+1][column+2].getTeam()!=team)){
 			validMoves.add(new Coordinates(row+1,column+2));
 		}
 		
 		//2 down and 1 right
-		if(column<7 && row<6 && board[row+2][column+1]==null){
+		if(column<7 && row<6 && (board[row+2][column+1]==null|| board[row+2][column+1].getTeam()!=team)){
 			validMoves.add(new Coordinates(row+2,column+1));
 		}
 		
 		//2 down and 1 left
-		if(column>0 && row<6 && board[row+2][column-1]==null){
+		if(column>0 && row<6 && (board[row+2][column-1]==null || board[row+2][column-1].getTeam()!=team)){
 			validMoves.add(new Coordinates(row+2,column-1));
 		}
 		
