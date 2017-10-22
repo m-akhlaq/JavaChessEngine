@@ -21,9 +21,6 @@ public class Knight extends Pieces{
 			return false;
 		ArrayList<Coordinates> validMoves = allValidMoves(board);
 		Coordinates proposedMove = new Coordinates(r,c);
-		
-				
-
 		System.out.println(validMoves);
 		//checks if proposed move is valid
 		for(Coordinates co:validMoves){
