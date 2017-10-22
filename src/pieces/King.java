@@ -22,7 +22,7 @@ public class King extends Pieces{
 		
 		Coordinates proposedMove = new Coordinates(r,c);	
 		ArrayList<Coordinates> validMoves=allValidMoves(board);
-		System.out.println(validMoves);
+		//System.out.println(validMoves);
 		for(Coordinates co:validMoves){
 			if (co.equals(proposedMove)){
 				return true;

@@ -23,7 +23,7 @@ public class Pawn extends Pieces{
 		Coordinates proposedMove = new Coordinates(r,c);
 		ArrayList<Coordinates> validMoves = allValidMoves(board);
 		//defining valid moves for white pawns
-		System.out.println("Valid Moves="+validMoves);
+		//System.out.println("Valid Moves="+validMoves);
 		for(Coordinates co:validMoves){
 			if (co.equals(proposedMove)){
 				return true;

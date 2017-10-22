@@ -23,7 +23,7 @@ public class Rook extends Pieces{
 		Coordinates proposedMove = new Coordinates(r,c);
 		List<Coordinates> validMoves = allValidMoves(board);
 		
-		System.out.println(validMoves);
+		//System.out.println(validMoves);
 		for(Coordinates co:validMoves){
 			if (co.equals(proposedMove)){
 				return true;

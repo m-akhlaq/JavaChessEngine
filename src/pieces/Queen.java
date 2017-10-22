@@ -173,7 +173,7 @@ public class Queen extends Pieces {
 		tempRowD++;//move down a row
 		tempColD++;//move right a column
 	}
-	System.out.println(validMoves);
+	//System.out.println(validMoves);
 	return validMoves;
 	
 	

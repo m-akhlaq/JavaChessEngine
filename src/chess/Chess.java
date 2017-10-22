@@ -19,7 +19,7 @@ public class Chess {
 		 int winner=0;
 		 int turn=2;
 		 int drawCounter=0;
-		 initBoard();
+		 checkMateTest();
 		
 		//a loop that keeps going until there is some result
 		String s="";
@@ -90,12 +90,21 @@ public class Chess {
 		move(currentCoord,newCoord);
 		renderBoard(board);
 
-		if (checkForCheckMate()==true){
+		if (checkForBlackCheckMate()==true){
 			System.out.println("CheckMate");
+			winner=0;
 			break;
 		}
+		if (checkForWhiteCheckMate()==true){
+			System.out.println("CheckMate");
+			winner=1;
+			break;
+		}
+		if (checkForBlackCheck(board)==true || checkForWhiteCheck(board)==true  ){
+			System.out.println("Check");
+		}
 		
-		checkForCheck(board);
+		
 		turn++;
 		
 		}
@@ -159,13 +168,8 @@ public class Chess {
 			}
 		}
 		Coordinates blackKing = findKing(1,board);
-	//	System.out.println("black King is at "+ blackKing );
-		//System.out.println("All White Moves are "+ allWhiteMoves);
-		
-
 		for(Coordinates c:allWhiteMoves){
 			if (c.equals(blackKing)){
-				System.out.println("black King in Check");
 				return true;
 			}
 		}
@@ -187,7 +191,6 @@ public class Chess {
 		
 		for(Coordinates c:allBlackMoves){
 			if (c.equals(whiteKing)){
-				//System.out.println("White King in Check");
 				return true;
 			}
 		}
@@ -198,7 +201,7 @@ public class Chess {
 	}
 	
 	
-	private static boolean checkForCheckMate(){
+	private static boolean checkForBlackCheckMate(){
 		//checking if black king is in check mate.
 		
 		//first we check if the king is under direct attack
@@ -211,7 +214,7 @@ public class Chess {
 				if (board[x][y]!=null && board[x][y].getTeam()==1){
 					Pieces p = board[x][y];
 					ArrayList<Coordinates> allMoves = board[x][y].allValidMoves(board);
-					if (simulateForCheckMate(allMoves,p.getRow(),p.getColumn(),board)==true)
+					if (simulateForCheckMate(allMoves,p.getRow(),p.getColumn(),board,1)==true)
 						return false;
 					
 				}
@@ -221,52 +224,72 @@ public class Chess {
 		
 		return true;
 	}
-	private static Pieces[][] makeDeepCopy(Pieces[][] p){
-		Pieces[][] copy = new Pieces[8][8];
+	
+	private static boolean checkForWhiteCheckMate(){
+		//checking if white king is in check mate.
+		
+		//first we check if the king is under direct attack, if not there is not checkmate
+		if (checkForWhiteCheck(board)==false)
+			return false;
+		
+		//the following code only runs if the king is in check (as it checks weather the check is just a check or a checkmate)
+		
+		//the logic of the algo is as follows: The loop below loops through the entire board and finds every white piece (if we are checking for white checkmate) 
+		//or black piece (if we are checking for black checkmate)(including tha king)
+		//and gets a list of all valid moves that they can make. Then it passes the coordinates of the current piece and the list of all valid moves it can make to
+		//the simulateForcheckmate method. This method makes a copy of the board and actually makes each possible move to check weather that move
+		//can get the king out of the check (including the king himself going through all his valid moves). If at any point, the simulateforcheck
+		//method finds that a valid move has removed that king from check, this method returns false as the king is not in checkmate. If no
+		//such move can be found, the king is in a checkmate!
 		for (int x=0;x<=7;x++){
 			for (int y=0;y<=7;y++){
-				Pieces a = p[x][y];
-				if (a==null)
-					copy[x][y]=null;
-				if (a instanceof Pawn)
-					copy[x][y]=new Pawn((Pieces)a);
-				if (a instanceof Bishop)
-					copy[x][y]=new Bishop((Pieces)a);
-				if (a instanceof King)
-					copy[x][y]=new King((Pieces)a);
-				if (a instanceof Knight)
-					copy[x][y]=new Knight((Pieces)a);
-				if (a instanceof Queen)
-					copy[x][y]=new Queen((Pieces)a);
-				if (a instanceof Rook)
-					copy[x][y]=new Rook((Rook)a);
+				if (board[x][y]!=null && board[x][y].getTeam()==0){
+					Pieces p = board[x][y];
+					ArrayList<Coordinates> allMoves = board[x][y].allValidMoves(board);
+					if (simulateForCheckMate(allMoves,p.getRow(),p.getColumn(),board,0)==true)
+						return false;
+					
+				}
 			}
-			
 		}
-		return copy;
+		
+		
+		return true;
 	}
-	private static boolean simulateForCheckMate(ArrayList<Coordinates> allMoves,int r,int cl,Pieces originalBoard[][]){
+	///simulates all moves one single piece can make to make sure that particular piece cannot break the checkmate
+	private static boolean simulateForCheckMate(ArrayList<Coordinates> allMoves,int r,int cl,Pieces originalBoard[][],int teamCheck){
+		//makes a deep copy of the original board so that the original isnt modified
 		Pieces[][] copyBoard=makeDeepCopy(originalBoard);
+		//piece whose all moves will be checked
 		Pieces cp = copyBoard[r][cl];
 		//System.out.println("All Moves "+allMoves);
-	
+	///loops through every move that piece
 		for(Coordinates c:allMoves){
-			
+			//resets the board and the piece after each move
 			copyBoard = makeDeepCopy(originalBoard);
 			cp=copyBoard[r][cl];
+			//manually moves the piece to one of its possible valid moves
 			copyBoard[c.getRow()][c.getColumn()]=cp;
 			copyBoard[cp.getRow()][cp.getColumn()]=null;
 			cp.setRow(c.getRow());
 			cp.setColumn(c.getColumn());
+			///this checks weather any move made by this piece can break the check. if the checkForBlackCheck or the white method return false
+			///this would indicate that a move that this piece made broke that check meaning the king is not is a checkmate 
+			if (teamCheck==1){
+				//checks if the valid move broke the check
 			if (checkForBlackCheck(copyBoard)==false){
-				System.out.println("Saving Coordinate "+c);
 				return true;
+			}
+			}else if (teamCheck==0){
+				if (checkForWhiteCheck(copyBoard)==false){
+					return true;
+			}
 			}
 			
 		}
 		return false;
 	}
-	
+	//return the coordinates of the king that is specified by the team argument
 	private static Coordinates findKing(int team,Pieces board[][]){
 		
 		for (int x=0;x<=7;x++){
@@ -279,14 +302,16 @@ public class Chess {
 		
 		return null; 
 	}
+	//used for custom testing. DELETE THIS
 	private static void checkMateTest(){
-		board[3][7] = new King(1,3,7,"bK");
-		board[4][5] = new King(0,4,5,"wK");
-		board[7][6] = new Rook(0,7,6,"wR");
-		board[6][6] = new Pawn(1,6,6,"wP");
+		board[3][7] = new King(0,3,7,"wK");
+		board[4][5] = new King(1,4,5,"bK");
+		board[7][6] = new Rook(1,7,6,"bR");
+		//board[6][6] = new Pawn(1,6,6,"wP");
 		renderBoard(board);
 		System.out.println();
 	}
+	//initilized the board
 	private static void initBoard(){
 		//rooks
 		board[0][0] = new Rook(1,0,0,"bR");
@@ -319,6 +344,31 @@ public class Chess {
 
 		renderBoard(board);
 		System.out.println();
+	}
+	//A utility method that makes a deep copy of the passed array.
+	private static Pieces[][] makeDeepCopy(Pieces[][] p){
+		Pieces[][] copy = new Pieces[8][8];
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				Pieces a = p[x][y];
+				if (a==null)
+					copy[x][y]=null;
+				if (a instanceof Pawn)
+					copy[x][y]=new Pawn((Pieces)a);
+				if (a instanceof Bishop)
+					copy[x][y]=new Bishop((Pieces)a);
+				if (a instanceof King)
+					copy[x][y]=new King((Pieces)a);
+				if (a instanceof Knight)
+					copy[x][y]=new Knight((Pieces)a);
+				if (a instanceof Queen)
+					copy[x][y]=new Queen((Pieces)a);
+				if (a instanceof Rook)
+					copy[x][y]=new Rook((Rook)a);
+			}
+			
+		}
+		return copy;
 	}
 
 }
