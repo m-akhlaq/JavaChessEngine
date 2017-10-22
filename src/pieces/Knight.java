@@ -16,8 +16,9 @@ public class Knight extends Pieces{
 		
 		if (r>7 || c>7 || r<0 || c<0)
 			return false;
-		
+		ArrayList<Coordinates> validMoves = allValidMoves(board);
 		Coordinates proposedMove = new Coordinates(r,c);
+<<<<<<< HEAD
 		List<Coordinates> validMoves = new ArrayList<Coordinates>();//each valid move is either open space or opposing team
 	
 		//hardcoded if statements
@@ -64,6 +65,8 @@ public class Knight extends Pieces{
 		}
 		
 				
+=======
+>>>>>>> 771ce0ed1436165aa2aa46020253385f7ed4a028
 		System.out.println(validMoves);
 		//checks if proposed move is valid
 		for(Coordinates co:validMoves){
@@ -72,9 +75,54 @@ public class Knight extends Pieces{
 			}
 		}
 				
-		return false;
-		
+		return false;	
 	}
+	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
+	ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
+	//hardcoded if statements
+	//going 2 left and 1 down
+	if(column>1 && row<7&&board[row+1][column-2]==null){
+		validMoves.add(new Coordinates(row+1,column-2));
+	}
+	
+	//2 left and 1 up
+	if(column>1 && row>0 &&board[row-1][column-2]==null){
+		validMoves.add(new Coordinates(row-1,column-2));
+	}
+	
+	//2 up and 1 left
+	if(column>0 && row>1&&board[row-2][column-1]==null){
+		validMoves.add(new Coordinates(row-2,column-1));
+	}
+	
+	//2 up and 1 right
+	if(column<7 && row>1 && board[row-2][column+1]==null){
+		validMoves.add(new Coordinates(row-2,column+1));
+	}
+	
+	//2 right and 1 up
+	if(column<6 && row>0 && board[row-1][column+2]==null){
+		validMoves.add(new Coordinates(row-1,column+2));
+	}
+	
+	//2 right and 1 down
+	if(column<6 && row<7 && board[row+1][column+2]==null){
+		validMoves.add(new Coordinates(row+1,column+2));
+	}
+	
+	//2 down and 1 right
+	if(column<7 && row<6 && board[row+2][column+1]==null){
+		validMoves.add(new Coordinates(row+2,column+1));
+	}
+	
+	//2 down and 1 left
+	if(column>0 && row<6 && board[row+2][column-1]==null){
+		validMoves.add(new Coordinates(row+2,column-1));
+	}
+
+	return validMoves;
+	}
+	
 	
 
 }

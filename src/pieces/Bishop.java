@@ -13,12 +13,24 @@ public class Bishop extends Pieces{
 
 	@Override
 	public boolean canMove(Pieces[][] board, int r,int c) {
-		
 		if (r>7 || c>7 || r<0 || c<0)
 			return false;
+		List<Coordinates> validMoves = allValidMoves(board);
+		Coordinates proposedMove = new Coordinates(r,c);	
+		System.out.println(validMoves);
+		//checks if proposed move is valid
+		for(Coordinates co:validMoves){
+			if (co.equals(proposedMove)){
+				return true;
+			}
+		}
+				
+		return false;
 		
-		Coordinates proposedMove = new Coordinates(r,c);
-		List<Coordinates> validMoves = new ArrayList<Coordinates>();
+	}
+	
+	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
+		ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
 		//defining valid moves for both Bishops
 		//moving up and to the left
 		int tempRowA=row-1;//used to track row position
@@ -91,17 +103,8 @@ public class Bishop extends Pieces{
 			tempRowD++;//move down a row
 			tempColD++;//move right a column
 		}
-			
-				
-		System.out.println(validMoves);
-		//checks if proposed move is valid
-		for(Coordinates co:validMoves){
-			if (co.equals(proposedMove)){
-				return true;
-			}
-		}
-				
-		return false;
+		
+		return validMoves;
 		
 	}
 	

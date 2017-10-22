@@ -4,10 +4,13 @@ import pieces.King;
 import pieces.Knight;
 import pieces.Pawn;
 import pieces.Pieces;
+import pieces.Queen;
 import pieces.Rook;
+import utilities.Coordinates;
 
 import static utilities.convertCoordinates.convertPosition;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Chess {
@@ -16,35 +19,8 @@ public class Chess {
 	public static void main(String[] args) {
 		 int winner=0;
 		 int turn=2;
-		 
-		 //placement of pieces on the board
-		 //pawns
-		for (int x=0;x<board[5].length;x++) {
-			board[6][x]=new Pawn(0,6,x,"wP");
-		}
-		for (int x=0;x<board[1].length;x++) {
-			board[1][x]=new Pawn(1,1,x,"bP");
-		}
-		//rooks
-		board[0][0] = new Rook(1,0,0,"bR");
-		board[0][7] = new Rook(1,0,7,"bR");
-		board[7][0] = new Rook(0,7,0,"wR");
-		board[7][7] = new Rook(0,7,7,"wR");
-		//king
-		board[0][4] = new King(1,0,4,"bK");
-		board[7][4] = new King(0,7,4,"wK");
-		//bishop
-		board[7][2] = new Bishop(0,7,2,"wB");
-		board[7][5] = new Bishop(0,7,5,"wB");
-		board[0][2] = new Bishop(1,0,2,"bB");
-		board[0][5] = new Bishop(1,0,5,"bB");
-		//knight
-		board[7][2] = new Knight(0,7,1,"wKn");
-		board[7][5] = new Knight(0,7,6,"wKn");
-		board[0][2] = new Knight(1,0,1,"bKn");
-		board[0][5] = new Knight(1,0,6,"bKn");
-		renderBoard(board);
-		System.out.println();
+		 int drawCounter=0;
+		 initBoard();
 		
 		//a loop that keeps going until there is some result
 		String s="";
@@ -60,8 +36,20 @@ public class Chess {
 		if (team==0)
 			System.out.println("White's move:");
 		else System.out.println("Black's move: ");
+		
 		Scanner scan = new Scanner(System.in);
 			s = scan.nextLine();
+		//checks if the users asks for a draw
+		if (s.equals("draw?")){
+			drawCounter=1;
+			turn++;
+			continue;
+		}
+		if (drawCounter==1 && s.equals("draw")){
+			winner=3;
+			break;
+		}
+		
 		
 		//calls the proposedMove method to split the input into current coordinates and proposed coordinates
 		String[] proposedMove = splitInput(s);
@@ -111,6 +99,7 @@ public class Chess {
 		board[newCoord[0]][newCoord[1]]=temp;
 		board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
 		board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+		checkForCheck();
 		
 		
 	}
@@ -136,6 +125,89 @@ public class Chess {
 			color+=1;
 		}
 		
+	}
+	
+	private static void checkForCheck(){
+		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
+		ArrayList<Coordinates> allBlackMoves = new ArrayList<Coordinates>();
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y]!=null && board[x][y].getTeam()==0){
+					allWhiteMoves.addAll(board[x][y].allValidMoves(board));
+				}
+			}
+		}
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y]!=null && board[x][y].getTeam()==1){
+					allBlackMoves.addAll(board[x][y].allValidMoves(board));
+				}
+			}
+		}
+		
+		Coordinates whiteKing = findKing(0);
+		Coordinates blackKing = findKing(1);
+		
+		for(Coordinates c:allBlackMoves){
+			if (c.equals(whiteKing)){
+				System.out.println("White King in Check");
+			}
+		}
+		for(Coordinates c:allWhiteMoves){
+			if (c.equals(blackKing)){
+				System.out.println("black King in Check");
+			}
+		}
+		
+	}
+	
+	private static Coordinates findKing(int team){
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y] instanceof King && board[x][y].getTeam()==team){
+					return new Coordinates(x,y);
+				}
+			}	
+		}
+		
+		return null; 
+	}
+	
+	private static void initBoard(){
+		//rooks
+		board[0][0] = new Rook(1,0,0,"bR");
+		board[0][7] = new Rook(1,0,7,"bR");
+		board[7][0] = new Rook(0,7,0,"wR");
+		board[7][7] = new Rook(0,7,7,"wR");
+		//king
+		board[0][4] = new King(1,0,4,"bK");
+		board[7][4] = new King(0,7,4,"wK");
+		//bishop
+		board[7][2] = new Bishop(0,7,2,"wB");
+		board[7][5] = new Bishop(0,7,5,"wB");
+		board[0][2] = new Bishop(1,0,2,"bB");
+		board[0][5] = new Bishop(1,0,5,"bB");
+		//knight
+		board[7][1] = new Knight(0,7,1,"wN");
+		board[7][6] = new Knight(0,7,6,"wN");
+		board[0][1] = new Knight(1,0,1,"bN");
+		board[0][6] = new Knight(1,0,6,"bN");
+		//Queen
+		board[7][3] = new Queen(0,7,3,"wQ");
+		board[0][3] = new Queen(1,0,3,"bQ");
+		 //pawns
+		for (int x=0;x<board[5].length;x++) {
+			board[6][x]=new Pawn(0,6,x,"wP");
+		}
+		for (int x=0;x<board[1].length;x++) {
+			board[1][x]=new Pawn(1,1,x,"bP");
+		}
+
+		renderBoard(board);
+		System.out.println();
 	}
 
 }

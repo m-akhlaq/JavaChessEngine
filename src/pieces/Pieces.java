@@ -1,5 +1,9 @@
 package pieces;
 
+import java.util.ArrayList;
+
+import utilities.Coordinates;
+
 public abstract class Pieces {
 	
 	
@@ -14,6 +18,7 @@ public abstract class Pieces {
 		 }
 
 	public abstract boolean canMove(Pieces[][]board,int r,int c);
+	public abstract ArrayList<Coordinates> allValidMoves(Pieces[][] board);
 	
 	public String getPosition() {
 		return null;
