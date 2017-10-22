@@ -10,6 +10,9 @@ public class Pawn extends Pieces{
 		super(team, row,column, name);
 		// TODO Auto-generated constructor stub
 	}
+	public Pawn(Pieces p){
+		super(p);
+	}
 
 	@Override
 	public boolean canMove(Pieces[][] board, int r,int c) {

@@ -16,7 +16,12 @@ public abstract class Pieces {
 		 this.column=column;
 		 this.name=name;
 		 }
-
+	public Pieces(Pieces p){
+		this.team=p.team;
+		this.row=p.row;
+		this.column=p.column;
+		this.name=p.name;
+	}
 	public abstract boolean canMove(Pieces[][]board,int r,int c);
 	public abstract ArrayList<Coordinates> allValidMoves(Pieces[][] board);
 	
@@ -30,6 +35,12 @@ public abstract class Pieces {
 		return name;
 	}
 	
+	public int getRow(){
+		return row;
+	}
+	public int getColumn(){
+		return column;
+	}
 	
 	public void setRow(int r) {
 		row =r;	

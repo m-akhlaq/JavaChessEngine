@@ -7,7 +7,6 @@ import pieces.Pieces;
 import pieces.Queen;
 import pieces.Rook;
 import utilities.Coordinates;
-
 import static utilities.convertCoordinates.convertPosition;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public class Chess {
 		else System.out.println("Black's move: ");
 		
 		Scanner scan = new Scanner(System.in);
-			s = scan.nextLine();
+		s = scan.nextLine();
 		//checks if the users asks for a draw
 		if (s.equals("draw?")){
 			drawCounter=1;
@@ -49,6 +48,18 @@ public class Chess {
 			winner=3;
 			break;
 		}
+		if (s.equals("resign")){
+			if (team==0){
+				winner=1;
+				break;
+			}
+			if (team==1){
+				winner=0;
+				break;
+			}
+			
+			}
+		
 		
 		
 		//calls the proposedMove method to split the input into current coordinates and proposed coordinates
@@ -78,11 +89,22 @@ public class Chess {
 		}
 		move(currentCoord,newCoord);
 		renderBoard(board);
+
+		if (checkForCheckMate()==true){
+			System.out.println("CheckMate");
+			break;
+		}
+		
+		checkForCheck(board);
 		turn++;
 		
 		}
 		
-	}
+		}
+
+
+		
+	
 	
 	private static String[] splitInput(String s){
 		s=s.trim();
@@ -99,7 +121,7 @@ public class Chess {
 		board[newCoord[0]][newCoord[1]]=temp;
 		board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
 		board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
-		checkForCheck();
+		
 		
 		
 	}
@@ -127,10 +149,8 @@ public class Chess {
 		
 	}
 	
-	private static void checkForCheck(){
+	private static boolean checkForBlackCheck(Pieces[][] board){
 		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
-		ArrayList<Coordinates> allBlackMoves = new ArrayList<Coordinates>();
-		
 		for (int x=0;x<=7;x++){
 			for (int y=0;y<=7;y++){
 				if (board[x][y]!=null && board[x][y].getTeam()==0){
@@ -138,6 +158,22 @@ public class Chess {
 				}
 			}
 		}
+		Coordinates blackKing = findKing(1,board);
+	//	System.out.println("black King is at "+ blackKing );
+		//System.out.println("All White Moves are "+ allWhiteMoves);
+		
+
+		for(Coordinates c:allWhiteMoves){
+			if (c.equals(blackKing)){
+				System.out.println("black King in Check");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean checkForWhiteCheck(Pieces[][] board){
+		ArrayList<Coordinates> allBlackMoves = new ArrayList<Coordinates>();
 		
 		for (int x=0;x<=7;x++){
 			for (int y=0;y<=7;y++){
@@ -147,23 +183,91 @@ public class Chess {
 			}
 		}
 		
-		Coordinates whiteKing = findKing(0);
-		Coordinates blackKing = findKing(1);
+		Coordinates whiteKing = findKing(0,board);
 		
 		for(Coordinates c:allBlackMoves){
 			if (c.equals(whiteKing)){
-				System.out.println("White King in Check");
+				//System.out.println("White King in Check");
+				return true;
 			}
 		}
-		for(Coordinates c:allWhiteMoves){
-			if (c.equals(blackKing)){
-				System.out.println("black King in Check");
-			}
-		}
+
+		
+		return false;
 		
 	}
 	
-	private static Coordinates findKing(int team){
+	
+	private static boolean checkForCheckMate(){
+		//checking if black king is in check mate.
+		
+		//first we check if the king is under direct attack
+		if (checkForBlackCheck(board)==false)
+			return false;
+		
+		
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				if (board[x][y]!=null && board[x][y].getTeam()==1){
+					Pieces p = board[x][y];
+					ArrayList<Coordinates> allMoves = board[x][y].allValidMoves(board);
+					if (simulateForCheckMate(allMoves,p.getRow(),p.getColumn(),board)==true)
+						return false;
+					
+				}
+			}
+		}
+		
+		
+		return true;
+	}
+	private static Pieces[][] makeDeepCopy(Pieces[][] p){
+		Pieces[][] copy = new Pieces[8][8];
+		for (int x=0;x<=7;x++){
+			for (int y=0;y<=7;y++){
+				Pieces a = p[x][y];
+				if (a==null)
+					copy[x][y]=null;
+				if (a instanceof Pawn)
+					copy[x][y]=new Pawn((Pieces)a);
+				if (a instanceof Bishop)
+					copy[x][y]=new Bishop((Pieces)a);
+				if (a instanceof King)
+					copy[x][y]=new King((Pieces)a);
+				if (a instanceof Knight)
+					copy[x][y]=new Knight((Pieces)a);
+				if (a instanceof Queen)
+					copy[x][y]=new Queen((Pieces)a);
+				if (a instanceof Rook)
+					copy[x][y]=new Rook((Rook)a);
+			}
+			
+		}
+		return copy;
+	}
+	private static boolean simulateForCheckMate(ArrayList<Coordinates> allMoves,int r,int cl,Pieces originalBoard[][]){
+		Pieces[][] copyBoard=makeDeepCopy(originalBoard);
+		Pieces cp = copyBoard[r][cl];
+		//System.out.println("All Moves "+allMoves);
+	
+		for(Coordinates c:allMoves){
+			
+			copyBoard = makeDeepCopy(originalBoard);
+			cp=copyBoard[r][cl];
+			copyBoard[c.getRow()][c.getColumn()]=cp;
+			copyBoard[cp.getRow()][cp.getColumn()]=null;
+			cp.setRow(c.getRow());
+			cp.setColumn(c.getColumn());
+			if (checkForBlackCheck(copyBoard)==false){
+				System.out.println("Saving Coordinate "+c);
+				return true;
+			}
+			
+		}
+		return false;
+	}
+	
+	private static Coordinates findKing(int team,Pieces board[][]){
 		
 		for (int x=0;x<=7;x++){
 			for (int y=0;y<=7;y++){
@@ -175,7 +279,14 @@ public class Chess {
 		
 		return null; 
 	}
-	
+	private static void checkMateTest(){
+		board[3][7] = new King(1,3,7,"bK");
+		board[4][5] = new King(0,4,5,"wK");
+		board[7][6] = new Rook(0,7,6,"wR");
+		board[6][6] = new Pawn(1,6,6,"wP");
+		renderBoard(board);
+		System.out.println();
+	}
 	private static void initBoard(){
 		//rooks
 		board[0][0] = new Rook(1,0,0,"bR");
