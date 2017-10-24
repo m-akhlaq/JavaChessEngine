@@ -12,6 +12,10 @@ import static utilities.convertCoordinates.convertPosition;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author shahe
+ *
+ */
 public class Chess {
 	private static Pieces board[][]=new Pieces[8][8];
 	
@@ -88,8 +92,9 @@ public class Chess {
 			currentCoord[1]=tempCurrentCoord[1];
 		}
 		move(currentCoord,newCoord);
+		promotion();
 		renderBoard(board);
-
+		
 		if (checkForBlackCheckMate()==true){
 			System.out.println("CheckMate");
 			winner=0;
@@ -108,21 +113,26 @@ public class Chess {
 		turn++;
 		
 		}
+		if (winner==0){
+			System.out.println("White wins");
+		}else if (winner==1){
+			System.out.println("Black wins");
+		}else {
+			System.out.println("draw");
+
+			
+		}
 		
 		}
 
 
 		
 	
-	
-	private static String[] splitInput(String s){
-		s=s.trim();
-		String[] result = s.split(" ");
-		
-		return result;
-	}
-	
-	
+	/**
+	 * 
+	 * @param currentCoord
+	 * @param newCoord
+	 */
 	private static void move(int currentCoord[],int newCoord[]){
 		//swaps the pieces, places null where currentCoord[] was and places the piece in the new spot.
 		Pieces temp = board[currentCoord[0]][currentCoord[1]];
@@ -135,7 +145,10 @@ public class Chess {
 		
 	}
 
-	
+	/**
+	 * 
+	 * @param b
+	 */
 	private static void renderBoard(Pieces [][] b){
 		int color=2;
 		for (int x=0;x<b.length;x++){
@@ -157,7 +170,23 @@ public class Chess {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 */
+	private static void promotion(){
+		for (int x=0;x<=7;x++){
+			if (board[0][x]!=null && board[0][x] instanceof Pawn &&  board[0][x].getTeam()==0)
+				board[0][x]=new Queen(0,0,x,"wQ");
+			if (board[7][x]!=null && board[7][x] instanceof Pawn && board[7][x].getTeam()==1)
+				board[7][x]=new Queen(1,7,x,"bQ");
+				
+		}
+	}
+	/**
+	 * 
+	 * @param board
+	 * @return
+	 */
 	private static boolean checkForBlackCheck(Pieces[][] board){
 		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
 		for (int x=0;x<=7;x++){
@@ -175,6 +204,11 @@ public class Chess {
 		}
 		return false;
 	}
+	/**
+	 * 
+	 * @param board
+	 * @return
+	 */
 	
 	private static boolean checkForWhiteCheck(Pieces[][] board){
 		ArrayList<Coordinates> allBlackMoves = new ArrayList<Coordinates>();
@@ -307,6 +341,8 @@ public class Chess {
 		board[3][7] = new King(0,3,7,"wK");
 		board[4][5] = new King(1,4,5,"bK");
 		board[7][6] = new Rook(1,7,6,"bR");
+		board[1][1] = new Pawn(0,1,1,"wP");
+		board[6][6] = new Pawn(1,6,6,"bP");
 		//board[6][6] = new Pawn(1,6,6,"wP");
 		renderBoard(board);
 		System.out.println();
@@ -369,6 +405,12 @@ public class Chess {
 			
 		}
 		return copy;
+	}
+	private static String[] splitInput(String s){
+		s=s.trim();
+		String[] result = s.split(" ");
+		
+		return result;
 	}
 
 }
