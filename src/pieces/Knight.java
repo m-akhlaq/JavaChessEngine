@@ -55,7 +55,7 @@ public class Knight extends Pieces{
 	}
 	
 	//2 right and 1 up
-	if(column<6 && row>0 && (board[row-1][column+2]==null||board[row-1][column+1].getTeam()!=team)){
+	if(column<6 && row>0 && (board[row-1][column+2]==null||board[row-1][column+2].getTeam()!=team)){
 		validMoves.add(new Coordinates(row-1,column+2));
 	}
 	

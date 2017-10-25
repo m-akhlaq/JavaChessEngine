@@ -18,12 +18,14 @@ import java.util.Scanner;
  */
 public class Chess {
 	private static Pieces board[][]=new Pieces[8][8];
-	
+	static int [] enpassantCoord = new int[2];
+	private static boolean enpassantCounter=false;
 	public static void main(String[] args) {
 		 int winner=0;
 		 int turn=2;
 		 int drawCounter=0;
-		 checkMateTest();
+		 
+		 initBoard();
 		
 		//a loop that keeps going until there is some result
 		String s="";
@@ -140,9 +142,40 @@ public class Chess {
 		board[newCoord[0]][newCoord[1]]=temp;
 		board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
 		board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+		if (enpassantCounter==true){
+			int [] originalCoord = new int[2];
+			if (enpassantCoord[0]==2){
+				originalCoord[0]=enpassantCoord[0]+1;
+				originalCoord[1]=enpassantCoord[1];
+			}else{
+				originalCoord[0]=enpassantCoord[0]-1;
+				originalCoord[1]=enpassantCoord[1];
+			}
+			System.out.println(originalCoord[0]+" " +originalCoord[1]);
+			
+			if (board[enpassantCoord[0]][enpassantCoord[1]] instanceof Pawn){
+				board[originalCoord[0]][originalCoord[1]]=null;
+			}else{
+				if (board[originalCoord[0]][originalCoord[1]] instanceof Pawn)
+					((Pawn)board[originalCoord[0]][originalCoord[1]]).setEnpassant(false);
+			}
+			enpassantCounter=false;
+			
+		}
 		
+	if (board[newCoord[0]][newCoord[1]] instanceof Pawn && Math.abs(currentCoord[0]-newCoord[0])==2){
+		   if (board[newCoord[0]][newCoord[1]].getTeam()==0){
+				enpassantCoord[0]=newCoord[0]+1;
+			    enpassantCoord[1]=newCoord[1];
+			}else{
+				enpassantCoord[0]=newCoord[0]-1;
+				enpassantCoord[1]=newCoord[1];
+			}
+		   ((Pawn) board[newCoord[0]][newCoord[1]]).setEnpassant(true);
+		   enpassantCounter=true;	
+		}
 		
-		
+		board[newCoord[0]][newCoord[1]].addOneMove();
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.List;
 import utilities.Coordinates;
 
 public class Pawn extends Pieces{
-	
+	boolean enPassant=false;
 	public Pawn(int team, int row,int column, String name) {
 		super(team, row,column, name);
 		// TODO Auto-generated constructor stub
@@ -49,6 +49,13 @@ public class Pawn extends Pieces{
 		 if (row>=1 && column<=6 && board[row-1][column+1]!=null && board[row-1][column+1].getTeam()!=team){
 			 validMoves.add(new Coordinates(row-1,column+1));
 		 }
+		 if (row==3 && column>=1 && board[row][column-1] instanceof Pawn && ((Pawn)board[row][column-1]).getEnpassant()==true){
+			 validMoves.add(new Coordinates(row-1,column-1));
+		 }
+		 if (row==3 && column<=6 && board[row][column+1] instanceof Pawn && ((Pawn)board[row][column+1]).getEnpassant()==true){
+			 validMoves.add(new Coordinates(row-1,column+1));
+		 }
+		 
 		 }else{
 		 if (row<=6 && board[row+1][column]==null){
 			 validMoves.add(new Coordinates(row+1,column));			
@@ -68,6 +75,12 @@ public class Pawn extends Pieces{
 		 if (row<=6 && column<=6 && board[row+1][column+1]!=null && board[row+1][column+1].getTeam()!=team){
 			  validMoves.add(new Coordinates(row+1,column+1));
 		 }	
+		 if (row==4 && column>=1 && board[row][column-1] instanceof Pawn && ((Pawn)board[row][column-1]).getEnpassant()==true){
+			 validMoves.add(new Coordinates(row+1,column-1));
+		 }
+		 if (row==4 && column<=6 && board[row][column+1] instanceof Pawn && ((Pawn)board[row][column+1]).getEnpassant()==true){
+			 validMoves.add(new Coordinates(row+1,column+1));
+		 }
 			
 			
 		}
@@ -75,6 +88,12 @@ public class Pawn extends Pieces{
 	return validMoves;
 	}
 	
+	public void setEnpassant(boolean b){
+		enPassant=b;
+	}
+	public boolean getEnpassant(){
+		return enPassant;
+	}
 	
 
 }

@@ -10,17 +10,20 @@ public abstract class Pieces {
 	protected int team;
 	protected int row,column;
 	protected String name;
+	protected int numberOfMoves;
 	public Pieces(int team,int row,int column,String name){
 		 this.team= team;
 		 this.row=row;
 		 this.column=column;
 		 this.name=name;
+		 numberOfMoves=0;
 		 }
 	public Pieces(Pieces p){
 		this.team=p.team;
 		this.row=p.row;
 		this.column=p.column;
 		this.name=p.name;
+		this.numberOfMoves=p.numberOfMoves;
 	}
 	public abstract boolean canMove(Pieces[][]board,int r,int c);
 	public abstract ArrayList<Coordinates> allValidMoves(Pieces[][] board);
@@ -47,6 +50,12 @@ public abstract class Pieces {
 	}
 	public void setColumn(int c) {
 		column=c;
+	}
+	public int getNumberOfMoves(){
+		return numberOfMoves;
+	}
+	public void addOneMove(){
+		numberOfMoves++;
 	}
 
 	
