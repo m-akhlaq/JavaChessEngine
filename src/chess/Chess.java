@@ -131,9 +131,10 @@ public class Chess {
 		
 	
 	/**
+	 * move changes a piece from the current position to the new coordinates
 	 * 
-	 * @param currentCoord
-	 * @param newCoord
+	 * @param currentCoord This is an int array of the coordinates of the current position
+	 * @param newCoord This is an int array of the coordinates of the new position
 	 */
 	private static void move(int currentCoord[],int newCoord[]){
 		//swaps the pieces, places null where currentCoord[] was and places the piece in the new spot.
@@ -179,8 +180,9 @@ public class Chess {
 	}
 
 	/**
+	 * renderBoard prints out a command line version of the chess board
 	 * 
-	 * @param b
+	 * @param b This is a 2D array of Pieces and the current board.
 	 */
 	private static void renderBoard(Pieces [][] b){
 		int color=2;
@@ -204,6 +206,7 @@ public class Chess {
 		
 	}
 	/**
+	 * promotion changes the value of a pawn once it reaches the other end of the board to a queen.
 	 * 
 	 */
 	private static void promotion(){
@@ -216,9 +219,10 @@ public class Chess {
 		}
 	}
 	/**
+	 * checkForBlackCheck returns whether black is in check.
 	 * 
-	 * @param board
-	 * @return
+	 * @param board This is a 2D array of Pieces and the current board.
+	 * @returns whether black is in check.
 	 */
 	private static boolean checkForBlackCheck(Pieces[][] board){
 		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
@@ -238,9 +242,10 @@ public class Chess {
 		return false;
 	}
 	/**
+	 * checkForWhiteCheck returns whether black is in check.
 	 * 
-	 * @param board
-	 * @return
+	 * @param board This is a 2D array of Pieces and the current board.
+	 * @returns whether white is in check.
 	 */
 	
 	private static boolean checkForWhiteCheck(Pieces[][] board){
@@ -267,7 +272,11 @@ public class Chess {
 		
 	}
 	
-	
+	/**
+	 * checkForBlackCheckMate returns whether black is in check mate. It first checks if black is in check.
+	 * 
+	 * @returns whether black is in check mate.
+	 */
 	private static boolean checkForBlackCheckMate(){
 		//checking if black king is in check mate.
 		
@@ -292,6 +301,11 @@ public class Chess {
 		return true;
 	}
 	
+	/**
+	 * checkForWhiteCheckMate returns whether black is in check mate. It first checks if white is in check.
+	 * 
+	 * @returns whether white is in check mate.
+	 */
 	private static boolean checkForWhiteCheckMate(){
 		//checking if white king is in check mate.
 		
@@ -356,6 +370,15 @@ public class Chess {
 		}
 		return false;
 	}
+	
+	
+	/**
+	 * findKing returns the king of a given team.
+	 * 
+	 * @param team The team of the king being looked for.
+	 * @param board This is a 2D array of pieces and the current board.
+	 * @returns The coordinates of the king of a given team.
+	 */
 	//return the coordinates of the king that is specified by the team argument
 	private static Coordinates findKing(int team,Pieces board[][]){
 		
@@ -380,6 +403,11 @@ public class Chess {
 		renderBoard(board);
 		System.out.println();
 	}
+	
+	/**
+	 * initBoard initializes the board by putting each piece in its starting position.
+	 * 
+	 */
 	//initilized the board
 	private static void initBoard(){
 		//rooks
@@ -414,6 +442,12 @@ public class Chess {
 		renderBoard(board);
 		System.out.println();
 	}
+	
+	/**
+	 * makeDeepCopy is a utility method that makes a deep copy of the passed array.
+	 * 
+	 * @returns a deep copy of the board.
+	 */
 	//A utility method that makes a deep copy of the passed array.
 	private static Pieces[][] makeDeepCopy(Pieces[][] p){
 		Pieces[][] copy = new Pieces[8][8];
@@ -439,6 +473,13 @@ public class Chess {
 		}
 		return copy;
 	}
+	
+	/**
+	 * splitInput splits a string into a String array.
+	 * 
+	 * @param This is a string.
+	 * @returns an array of strings.
+	 */
 	private static String[] splitInput(String s){
 		s=s.trim();
 		String[] result = s.split(" ");
