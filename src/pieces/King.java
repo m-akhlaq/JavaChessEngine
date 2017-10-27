@@ -14,6 +14,14 @@ public class King extends Pieces{
 		super(p);
 	}
 
+	/**
+	 * canMove returns whether a piece can move to the proposed position.
+	 * 
+	 * @param board This is a 2D array of Pieces and the current board.
+	 * @param r This is the proposed row.
+	 * @param c This is the proposed column.
+	 * @returns a deep copy of the board.
+	 */
 	@Override
 	public boolean canMove(Pieces[][] board, int r,int c) {
 		
@@ -32,6 +40,13 @@ public class King extends Pieces{
 		
 	}
 	
+	
+	/**
+	 * allValidMoves returns a list of all the coordinates of all the valid moves for this piece
+	 * 
+	 * @param board This is a 2D array of Pieces and the current board.
+	 * @returns an ArrayList of coordinates of all the valid moves
+	 */
 	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
 		ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
 		//defining valid moves for both Kings
