@@ -26,7 +26,7 @@ public class Chess {
 		 int turn=2;
 		 int drawCounter=0;
 		 
-		 checkMateTest();
+		 initBoard();
 		
 		//a loop that keeps going until there is some result
 		String s="";
