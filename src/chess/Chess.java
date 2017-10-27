@@ -25,7 +25,7 @@ public class Chess {
 		 int turn=2;
 		 int drawCounter=0;
 		 
-		 initBoard();
+		 checkMateTest();
 		
 		//a loop that keeps going until there is some result
 		String s="";
@@ -138,10 +138,29 @@ public class Chess {
 	private static void move(int currentCoord[],int newCoord[]){
 		//swaps the pieces, places null where currentCoord[] was and places the piece in the new spot.
 		Pieces temp = board[currentCoord[0]][currentCoord[1]];
+		
+		if (temp instanceof King && Math.abs(currentCoord[1]-newCoord[1])==2){
+			if (newCoord[1]>4){
+				Pieces rook = board[currentCoord[0]][7];
+				board[currentCoord[0]][currentCoord[1]]=null;
+				board[newCoord[0]][newCoord[1]]=temp;
+				board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
+				board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+				board[newCoord[0]][newCoord[1]-1]=rook;
+				board[newCoord[0]][newCoord[1]-1].setRow(newCoord[0]);
+				board[newCoord[0]][newCoord[1]-1].setColumn(newCoord[1]-1);
+				board[newCoord[0]][newCoord[1]-1].addOneMove();
+				board[currentCoord[0]][7]=null;
+				
+			}
+			
+			
+		}else{
 		board[currentCoord[0]][currentCoord[1]]=null;
 		board[newCoord[0]][newCoord[1]]=temp;
 		board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
 		board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+		}
 		if (enpassantCounter==true){
 			int [] originalCoord = new int[2];
 			if (enpassantCoord[0]==2){
@@ -198,10 +217,20 @@ public class Chess {
 				color++;
 			}
 			
-			System.out.println("   "+(8-x)+"");
+			System.out.println(""+(8-x)+"");
 			color+=1;
 		}
 		
+		System.out.print(" a  ");
+		System.out.print(" b  ");
+		System.out.print(" c  ");
+		System.out.print(" d  ");
+		System.out.print(" e  ");
+		System.out.print(" f  ");
+		System.out.print(" g  ");
+		System.out.print(" h  ");
+		System.out.println();
+
 	}
 	/**
 	 * 
@@ -371,11 +400,11 @@ public class Chess {
 	}
 	//used for custom testing. DELETE THIS
 	private static void checkMateTest(){
-		board[3][7] = new King(0,3,7,"wK");
-		board[4][5] = new King(1,4,5,"bK");
-		board[7][6] = new Rook(1,7,6,"bR");
-		board[1][1] = new Pawn(0,1,1,"wP");
-		board[6][6] = new Pawn(1,6,6,"bP");
+		board[7][4] = new King(0,7,4,"wK");
+		board[0][4] = new King(1,0,4,"bK");
+		board[7][7] = new Rook(0,7,7,"wR");
+		board[0][7] = new Rook(1,0,7,"bR");
+		//board[6][6] = new Pawn(1,6,6,"bP");
 		//board[6][6] = new Pawn(1,6,6,"wP");
 		renderBoard(board);
 		System.out.println();

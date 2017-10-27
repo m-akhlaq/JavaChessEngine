@@ -67,6 +67,13 @@ public class King extends Pieces{
 				if (board[row+1][column-1]==null || board[row+1][column-1].getTeam()!=team)
 					validMoves.add(new Coordinates(row+1,column-1));
 			}
+			
+			if (getNumberOfMoves()==0 && board[row][column+3] instanceof Rook && board[row][column+3].getTeam()==team && board[row][column+3].getNumberOfMoves()==0 && board[row][column+2]==null && board[row][column+1]==null){
+				validMoves.add(new Coordinates(row,column+2));
+			}
+			if (getNumberOfMoves()==0 && board[row][column-4] instanceof Rook && board[row][column-4].getTeam()==team && board[row][column-4].getNumberOfMoves()==0 && board[row][column-3]==null && board[row][column-2]==null && board[row][column-1]==null){
+				validMoves.add(new Coordinates(row,column-2));
+			}
 			return validMoves;
 		
 	}
