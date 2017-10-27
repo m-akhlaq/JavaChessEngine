@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * @author shahe
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
  *
  */
 public class Chess {
@@ -44,16 +45,19 @@ public class Chess {
 		
 		Scanner scan = new Scanner(System.in);
 		s = scan.nextLine();
-		//checks if the users asks for a draw
-		if (s.equals("draw?")){
+		if (drawCounter==1 && !s.equals("draw"))
+			drawCounter=0;
+		if (s.contains("draw?") &&  drawCounter==0){
 			drawCounter=1;
-			turn++;
-			continue;
+			s=s.substring(0,5);
+			System.out.println(s);
 		}
+		
 		if (drawCounter==1 && s.equals("draw")){
 			winner=3;
 			break;
 		}
+
 		if (s.equals("resign")){
 			if (team==0){
 				winner=1;
@@ -75,11 +79,19 @@ public class Chess {
 		int newCoord[]=convertPosition(proposedMove[1]);
 		Pieces p = board[currentCoord[0]][currentCoord[1]];
 		//this while loop runs when either the piece selected in null or the attempted move is illegal. 
-		while (p==null || p.canMove(board, newCoord[0], newCoord[1])==false){
-		   System.out.println("Invalid Move, try again");
+		while (p==null ||  team!= p.getTeam() || p.canMove(board, newCoord[0], newCoord[1])==false){
+		   System.out.println("Illegal Move, try again");
 		   	//scanner is reset so new input could be entered
 		    scan = new Scanner(System.in);
 			s = scan.nextLine();
+			if (s.contains("draw?") &&  drawCounter==0){
+				drawCounter=1;
+				s=s.substring(0,5);	
+			}
+			if (drawCounter==1 && s.equals("draw")){
+				winner=3;
+				break;
+			}
 			proposedMove = splitInput(s);
 			//new temperory arrays are defined as a workaround for having an array returned from method convert postion
 			int [] tempCurrentCoord=convertPosition(proposedMove[0]);
@@ -94,6 +106,14 @@ public class Chess {
 			currentCoord[1]=tempCurrentCoord[1];
 		}
 		move(currentCoord,newCoord);
+		if (findKing(0,board)==null){
+			winner=1;
+			break;
+		}
+		if (findKing(1,board)==null){
+			winner=0;
+			break;
+		}
 		promotion();
 		renderBoard(board);
 		
@@ -152,7 +172,17 @@ public class Chess {
 				board[newCoord[0]][newCoord[1]-1].setColumn(newCoord[1]-1);
 				board[newCoord[0]][newCoord[1]-1].addOneMove();
 				board[currentCoord[0]][7]=null;
-				
+			}else {
+				Pieces rook = board[currentCoord[0]][0];
+				board[currentCoord[0]][currentCoord[1]]=null;
+				board[newCoord[0]][newCoord[1]]=temp;
+				board[newCoord[0]][newCoord[1]].setRow(newCoord[0]);
+				board[newCoord[0]][newCoord[1]].setColumn(newCoord[1]);
+				board[newCoord[0]][newCoord[1]+1]=rook;
+				board[newCoord[0]][newCoord[1]+1].setRow(newCoord[0]);
+				board[newCoord[0]][newCoord[1]+1].setColumn(newCoord[1]+1);
+				board[newCoord[0]][newCoord[1]+1].addOneMove();
+				board[currentCoord[0]][0]=null;
 			}
 			
 			
@@ -171,7 +201,6 @@ public class Chess {
 				originalCoord[0]=enpassantCoord[0]-1;
 				originalCoord[1]=enpassantCoord[1];
 			}
-			System.out.println(originalCoord[0]+" " +originalCoord[1]);
 			
 			if (board[enpassantCoord[0]][enpassantCoord[1]] instanceof Pawn){
 				board[originalCoord[0]][originalCoord[1]]=null;
@@ -247,12 +276,7 @@ public class Chess {
 				
 		}
 	}
-	/**
-	 * checkForBlackCheck returns whether black is in check.
-	 * 
-	 * @param board This is a 2D array of Pieces and the current board.
-	 * @returns whether black is in check.
-	 */
+
 	private static boolean checkForBlackCheck(Pieces[][] board){
 		ArrayList<Coordinates> allWhiteMoves = new ArrayList<Coordinates>();
 		for (int x=0;x<=7;x++){
@@ -426,8 +450,8 @@ public class Chess {
 		board[7][4] = new King(0,7,4,"wK");
 		board[0][4] = new King(1,0,4,"bK");
 		board[7][7] = new Rook(0,7,7,"wR");
-		board[0][7] = new Rook(1,0,7,"bR");
-		//board[6][6] = new Pawn(1,6,6,"bP");
+		board[0][0] = new Rook(1,0,0,"bR");
+		board[7][1] = new Pawn(1,7,1,"bP");
 		//board[6][6] = new Pawn(1,6,6,"wP");
 		renderBoard(board);
 		System.out.println();
