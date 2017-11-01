@@ -53,7 +53,6 @@ public class Chess {
 		if (s.contains("draw?") &&  drawCounter==0){
 			drawCounter=1;
 			s=s.substring(0,5);
-			System.out.println(s);
 		}
 		if (s.contains("N") || s.contains("Q") || s.contains("B") || s.contains("R")){
 			promo=s.charAt(s.length()-1);
@@ -157,8 +156,9 @@ public class Chess {
 			break;
 		}
 		if (checkForBlackCheck(board)==true || checkForWhiteCheck(board)==true  ){
-			System.out.println();
 			System.out.println("Check");
+			System.out.println();
+
 
 		}
 		
@@ -167,13 +167,10 @@ public class Chess {
 		
 		}
 		if (winner==0){
-			System.out.println();
 			System.out.println("White wins");
 		}else if (winner==1){
-			System.out.println();
 			System.out.println("Black wins");
 		}else {
-			System.out.println();
 			System.out.println("draw");
 
 			
@@ -268,7 +265,6 @@ public class Chess {
 	 */
 	private static void renderBoard(Pieces [][] b){
 		int color=2;
-		System.out.println();
 		for (int x=0;x<b.length;x++){
 			for (int y=0;y<b[x].length;y++){
 				if (b[x][y]==null){
@@ -295,6 +291,8 @@ public class Chess {
 		System.out.print(" f  ");
 		System.out.print(" g  ");
 		System.out.print(" h  ");
+		
+		System.out.println();
 		System.out.println();
 
 	}
@@ -554,7 +552,7 @@ public class Chess {
 		}
 
 		renderBoard(board);
-		System.out.println();
+		
 	}
 	
 	/**
