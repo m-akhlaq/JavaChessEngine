@@ -30,27 +30,35 @@ public class Chess {
 		
 		//a loop that keeps going until there is some result
 		String s="";
+		gameLoop:
 		while (winner==0){
-		
+		char promo = 'Q';
 		int team;
 		//defines whose turn it is
 		if (turn%2==0)
 			team=0;
 		else team=1;
 		//reads in the initial input
-		
 		if (team==0)
-			System.out.println("White's move:");
-		else System.out.println("Black's move: ");
+			System.out.print("White's move: ");
+		else System.out.print("Black's move: ");
+		
+
 		
 		Scanner scan = new Scanner(System.in);
 		s = scan.nextLine();
+		System.out.println();
 		if (drawCounter==1 && !s.equals("draw"))
 			drawCounter=0;
 		if (s.contains("draw?") &&  drawCounter==0){
 			drawCounter=1;
 			s=s.substring(0,5);
 			System.out.println(s);
+		}
+		if (s.contains("N") || s.contains("Q") || s.contains("B") || s.contains("R")){
+			promo=s.charAt(s.length()-1);
+			s=s.substring(0,5);
+			
 		}
 		
 		if (drawCounter==1 && s.equals("draw")){
@@ -80,10 +88,21 @@ public class Chess {
 		Pieces p = board[currentCoord[0]][currentCoord[1]];
 		//this while loop runs when either the piece selected in null or the attempted move is illegal. 
 		while (p==null ||  team!= p.getTeam() || p.canMove(board, newCoord[0], newCoord[1])==false){
-		   System.out.println("Illegal Move, try again");
+		   System.out.print("Illegal Move, try again ");
+		   promo='Q';
 		   	//scanner is reset so new input could be entered
 		    scan = new Scanner(System.in);
 			s = scan.nextLine();
+			if (s.equals("resign")){
+				if (team==0){
+					winner=1;
+					break gameLoop;
+				}
+				if (team==1){
+					winner=0;
+					break gameLoop;
+				}
+				}
 			if (s.contains("draw?") &&  drawCounter==0){
 				drawCounter=1;
 				s=s.substring(0,5);	
@@ -92,6 +111,13 @@ public class Chess {
 				winner=3;
 				break;
 			}
+			if (s.contains("N") || s.contains("Q") || s.contains("B") || s.contains("R")){
+				promo=s.charAt(s.length()-1);
+				s=s.substring(0,5);
+				
+			}
+
+
 			proposedMove = splitInput(s);
 			//new temperory arrays are defined as a workaround for having an array returned from method convert postion
 			int [] tempCurrentCoord=convertPosition(proposedMove[0]);
@@ -114,21 +140,26 @@ public class Chess {
 			winner=0;
 			break;
 		}
-		promotion();
+		promotion(promo);
 		renderBoard(board);
 		
 		if (checkForBlackCheckMate()==true){
-			System.out.println("CheckMate");
+			
+			System.out.println("Checkmate");
+
 			winner=0;
 			break;
 		}
 		if (checkForWhiteCheckMate()==true){
-			System.out.println("CheckMate");
+			System.out.println("Checkmate");
+
 			winner=1;
 			break;
 		}
 		if (checkForBlackCheck(board)==true || checkForWhiteCheck(board)==true  ){
+			System.out.println();
 			System.out.println("Check");
+
 		}
 		
 		
@@ -136,10 +167,13 @@ public class Chess {
 		
 		}
 		if (winner==0){
+			System.out.println();
 			System.out.println("White wins");
 		}else if (winner==1){
+			System.out.println();
 			System.out.println("Black wins");
 		}else {
+			System.out.println();
 			System.out.println("draw");
 
 			
@@ -159,7 +193,7 @@ public class Chess {
 	private static void move(int currentCoord[],int newCoord[]){
 		//swaps the pieces, places null where currentCoord[] was and places the piece in the new spot.
 		Pieces temp = board[currentCoord[0]][currentCoord[1]];
-		
+		//handles casteling
 		if (temp instanceof King && Math.abs(currentCoord[1]-newCoord[1])==2){
 			if (newCoord[1]>4){
 				Pieces rook = board[currentCoord[0]][7];
@@ -234,6 +268,7 @@ public class Chess {
 	 */
 	private static void renderBoard(Pieces [][] b){
 		int color=2;
+		System.out.println();
 		for (int x=0;x<b.length;x++){
 			for (int y=0;y<b[x].length;y++){
 				if (b[x][y]==null){
@@ -264,15 +299,32 @@ public class Chess {
 
 	}
 	/**
-	 * promotion changes the value of a pawn once it reaches the other end of the board to a queen.
-	 * 
+	 * This function takes in a char and promotes which ever pawn is in the position to get promoted
+	 * @param p the piece name that the user wants their pawn to promote to
 	 */
-	private static void promotion(){
+	private static void promotion(char p){
 		for (int x=0;x<=7;x++){
-			if (board[0][x]!=null && board[0][x] instanceof Pawn &&  board[0][x].getTeam()==0)
+			if (board[0][x]!=null && board[0][x] instanceof Pawn &&  board[0][x].getTeam()==0){
+				if (p=='Q')
 				board[0][x]=new Queen(0,0,x,"wQ");
+				else if (p=='N')
+				board[0][x]=new Knight(0,0,x,"wN");
+				else if (p=='B')
+				board[0][x]=new Bishop(0,0,x,"wB");
+				else if (p=='R')
+				board[0][x]=new Rook(0,0,x,"wR");
+			
+			
+			}
 			if (board[7][x]!=null && board[7][x] instanceof Pawn && board[7][x].getTeam()==1)
+				if (p=='Q')
 				board[7][x]=new Queen(1,7,x,"bQ");
+				else if (p=='N')
+				board[7][x]=new Knight(1,7,x,"bN");
+				else if (p=='B')
+				board[7][x]=new Bishop(1,7,x,"bB");
+				else if (p=='R')
+				board[7][x]=new Rook(1,7,x,"bR");
 				
 		}
 	}
@@ -298,7 +350,7 @@ public class Chess {
 	 * checkForWhiteCheck returns whether black is in check.
 	 * 
 	 * @param board This is a 2D array of Pieces and the current board.
-	 * @returns whether white is in check.
+	 * @return boolean 0- white king is not in check,1 if white king is in check
 	 */
 	
 	private static boolean checkForWhiteCheck(Pieces[][] board){
@@ -328,7 +380,7 @@ public class Chess {
 	/**
 	 * checkForBlackCheckMate returns whether black is in check mate. It first checks if black is in check.
 	 * 
-	 * @returns whether black is in check mate.
+	 * @return true to false whether black king is in check mate.
 	 */
 	private static boolean checkForBlackCheckMate(){
 		//checking if black king is in check mate.
@@ -357,7 +409,7 @@ public class Chess {
 	/**
 	 * checkForWhiteCheckMate returns whether black is in check mate. It first checks if white is in check.
 	 * 
-	 * @returns whether white is in check mate.
+	 * @return whether white king is in check mate.
 	 */
 	private static boolean checkForWhiteCheckMate(){
 		//checking if white king is in check mate.
@@ -391,6 +443,15 @@ public class Chess {
 		return true;
 	}
 	///simulates all moves one single piece can make to make sure that particular piece cannot break the checkmate
+	/**
+	 * 
+	 * @param allMoves all valid moves the piece has
+	 * @param r the row of the said piece
+	 * @param cl the column of the said piece
+	 * @param originalBoard the current play board
+	 * @param teamCheck the team of the piece
+	 * @return true/false true if the king can be broken out of check, false if not
+	 */
 	private static boolean simulateForCheckMate(ArrayList<Coordinates> allMoves,int r,int cl,Pieces originalBoard[][],int teamCheck){
 		//makes a deep copy of the original board so that the original isnt modified
 		Pieces[][] copyBoard=makeDeepCopy(originalBoard);
@@ -430,7 +491,7 @@ public class Chess {
 	 * 
 	 * @param team The team of the king being looked for.
 	 * @param board This is a 2D array of pieces and the current board.
-	 * @returns The coordinates of the king of a given team.
+	 * @return The coordinates of the king of a given team.
 	 */
 	//return the coordinates of the king that is specified by the team argument
 	private static Coordinates findKing(int team,Pieces board[][]){
@@ -449,10 +510,10 @@ public class Chess {
 	private static void checkMateTest(){
 		board[7][4] = new King(0,7,4,"wK");
 		board[0][4] = new King(1,0,4,"bK");
-		board[7][7] = new Rook(0,7,7,"wR");
-		board[0][0] = new Rook(1,0,0,"bR");
-		board[7][1] = new Pawn(1,7,1,"bP");
-		//board[6][6] = new Pawn(1,6,6,"wP");
+		/**board[7][7] = new Rook(0,7,7,"wR");
+		board[0][0] = new Rook(1,0,0,"bR");**/
+		board[6][1] = new Pawn(1,6,1,"bP");
+		board[1][2] = new Pawn(0,1,2,"wP");
 		renderBoard(board);
 		System.out.println();
 	}
@@ -498,8 +559,8 @@ public class Chess {
 	
 	/**
 	 * makeDeepCopy is a utility method that makes a deep copy of the passed array.
-	 * 
-	 * @returns a deep copy of the board.
+	 * @param p 2d array of the board whose copy you want made
+	 * @return a 2d array which is a deep copy of the board.
 	 */
 	//A utility method that makes a deep copy of the passed array.
 	private static Pieces[][] makeDeepCopy(Pieces[][] p){
@@ -530,8 +591,8 @@ public class Chess {
 	/**
 	 * splitInput splits a string into a String array.
 	 * 
-	 * @param This is a string.
-	 * @returns an array of strings.
+	 * @param s This is a string.
+	 * @return an array of strings.
 	 */
 	private static String[] splitInput(String s){
 		s=s.trim();

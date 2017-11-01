@@ -1,5 +1,9 @@
 package utilities;
-
+/**
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
+ *
+ */
 public class convertCoordinates {
 	
 	/**

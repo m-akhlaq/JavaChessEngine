@@ -1,5 +1,9 @@
 package pieces;
-
+/**
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
+ *
+ */
 import java.util.ArrayList;
 
 import utilities.Coordinates;
@@ -18,6 +22,11 @@ public abstract class Pieces {
 		 this.name=name;
 		 numberOfMoves=0;
 		 }
+	
+	/**
+	 * This constructor is used to make deep copy of the piece
+	 * @param p A piece whose copy you want made
+	 */
 	public Pieces(Pieces p){
 		this.team=p.team;
 		this.row=p.row;
@@ -32,7 +41,7 @@ public abstract class Pieces {
 	 * @param board This is a 2D array of Pieces and the current board.
 	 * @param r This is the proposed row.
 	 * @param c This is the proposed column.
-	 * @returns a deep copy of the board.
+	 * @return booelan weather the piece can move to the proposed location.
 	 */
 	public abstract boolean canMove(Pieces[][]board,int r,int c);
 	
@@ -40,7 +49,7 @@ public abstract class Pieces {
 	 * allValidMoves returns a list of all the coordinates of all the valid moves for this piece
 	 * 
 	 * @param board This is a 2D array of Pieces and the current board.
-	 * @returns an ArrayList of coordinates of all the valid moves
+	 * @return an ArrayList of coordinates of all the valid moves
 	 */
 	public abstract ArrayList<Coordinates> allValidMoves(Pieces[][] board);
 	
@@ -110,7 +119,7 @@ public abstract class Pieces {
 	/**
 	 * getNumberOfMoves returns the number of moves made by this piece.
 	 * 
-	 * @returns the number of moves this piece has made.
+	 * @return the number of moves this piece has made.
 	 */
 	public int getNumberOfMoves(){
 		return numberOfMoves;

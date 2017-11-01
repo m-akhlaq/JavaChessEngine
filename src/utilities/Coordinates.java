@@ -1,5 +1,9 @@
 package utilities;
-
+/**
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
+ *
+ */
 public class Coordinates {
 	int r,c;
 	public Coordinates(int r,int c){

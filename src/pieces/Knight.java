@@ -1,27 +1,37 @@
 package pieces;
+/**
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
+ *
+ */
 import java.util.ArrayList;
 import java.util.List;
 
 import utilities.Coordinates;
 
 public class Knight extends Pieces{
-	
+
+	 
+	/**
+	 * This constructor initilizes the piece
+	 * @param team the team the piece belongs to
+	 * @param row the row of the piece
+	 * @param column the column of the row
+	 * @param name name of the piece
+	 */
 	public Knight(int team, int row,int column, String name) {
 		super(team, row,column, name);
 		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * This constructor is only to be used to create deep copies
+	 * @param p the piece whose deep copy you want made
+	 */
 	public Knight(Pieces p){
 		super(p);
 	}
 
-	/**
-	 * canMove returns whether a piece can move to the proposed position.
-	 * 
-	 * @param board This is a 2D array of Pieces and the current board.
-	 * @param r This is the proposed row.
-	 * @param c This is the proposed column.
-	 * @returns a deep copy of the board.
-	 */
+
 	@Override
 	public boolean canMove(Pieces[][] board, int r,int c) {
 		
@@ -40,12 +50,7 @@ public class Knight extends Pieces{
 		return false;	
 	}
 	
-	/**
-	 * allValidMoves returns a list of all the coordinates of all the valid moves for this piece
-	 * 
-	 * @param board This is a 2D array of Pieces and the current board.
-	 * @returns an ArrayList of coordinates of all the valid moves
-	 */
+	@Override
 	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
 	ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
 	//hardcoded if statements

@@ -1,5 +1,9 @@
 package pieces;
-
+/**
+ * @author Muhammad S. Akhlaq
+ * @author John Brauner
+ *
+ */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,23 +12,25 @@ import utilities.Coordinates;
 public class Queen extends Pieces {
 
 	
+	/**
+	 * This constructor initilizes the piece
+	 * @param team the team the piece belongs to
+	 * @param row the row of the piece
+	 * @param column the column of the row
+	 * @param name name of the piece
+	 */
 	public Queen(int team, int row, int column, String name) {
 		super(team, row, column, name);
-		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * This constructor is only to be used to create deep copies
+	 * @param p the piece whose deep copy you want made
+	 */
 	public Queen(Pieces p){
 		super(p);
 	}
 
 	
-	/**
-	 * canMove returns whether a piece can move to the proposed position.
-	 * 
-	 * @param board This is a 2D array of Pieces and the current board.
-	 * @param r This is the proposed row.
-	 * @param c This is the proposed column.
-	 * @returns a deep copy of the board.
-	 */
 	@Override
 	public boolean canMove(Pieces[][] board, int r, int c) {
 		if (r>7 || c>7 || r<0 || c<0)
@@ -42,12 +48,7 @@ public class Queen extends Pieces {
 	}
 	
 	
-	/**
-	 * allValidMoves returns a list of all the coordinates of all the valid moves for this piece
-	 * 
-	 * @param board This is a 2D array of Pieces and the current board.
-	 * @returns an ArrayList of coordinates of all the valid moves
-	 */
+	@Override
 	public ArrayList<Coordinates> allValidMoves(Pieces[][] board){
 	ArrayList<Coordinates> validMoves = new ArrayList<Coordinates>();
 	//defining valid moves for both Rooks
